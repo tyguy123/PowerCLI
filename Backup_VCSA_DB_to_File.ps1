@@ -7,12 +7,10 @@
 	Twitter:		@butch7903
 	GitHub:			https://github.com/butch7903
 	===========================================================================
-
 	.SYNOPSIS
 		This script automates the full database backup process of the VMware VCSA 6.5 or higher. 
 		The script also auto deletes any version previous database backup based on a maximum day 
 		threshold you set.
-
 	.DESCRIPTION
 		Use this script to backup the full VMware VCSA 6.5 or higher datebase. For the first time use,
 		run this script manually with administrator rights to correctly install any PowerShell modules needed
@@ -24,7 +22,6 @@
 		an AES encrypted flat format to allow for future runnings of this script.
 		Use this script with a Windows Task Scheduler or VMware Orchestrator to schedule/automate the 
 		backup process on a timely bases. 
-
 	.NOTES
 		Credit goes to @AlanRenouf and @vBrianGraf for the Backup-VCSAToFile Function
 		User Account must have the following VCSA rights: 
@@ -35,7 +32,6 @@
 		FTPS Note: Get-FTPChildItem "-Recurse" Feature does not work properly with FTPS with CrushFTP Server
 		This script does not do automatic clean up of HTTP or HTTPS protocols due to special programming needed for either protocol
 		This script requires a VMware PowerCLI minimum version 6.5.3 or greater
-
 	.TROUBLESHOOTING
 		If the backup process fails, delete User.txt, Password.txt and run script manually again to fill in proper info.
 		If backup process continues to fail and you are using backup encryption, change Anwserfile UseBackupPassword to No and retest.
@@ -196,7 +192,8 @@ If (Test-Path $AnswerFile)
 			Write-Host "Continuing..."
 			Start-Sleep -Seconds 2
 		}
-	} 
+	}
+}	
 	Else {
 		$Answers_List = @()
 		$Answers="" | Select Version,SubVersion,vCenter,LocationType,LocationServer,Location,Comments,ExportDays,SmtpServer,MsgFrom,MsgTo,UseBackupPassword
@@ -259,7 +256,7 @@ If (Test-Path $AnswerFile)
 		Write-Host "Exporting Information to File"$AnswerFile
 		$Answers_List | Export-CSV -NoTypeInformation $AnswerFile
 	}
-}
+#}
 
 ##Create Secure AES Keys for User and Password Management
 $KeyFile = $pwd.path+"\"+"AES.key"
@@ -376,14 +373,12 @@ Function Backup-VCSAToFile {
      Blog:          www.vtagion.com
      Twitter:       @vBrianGraf
 	===========================================================================
-
 	.SYNOPSIS
 		This function will allow you to create a full or partial backup of your
     VCSA appliance. (vSphere 6.5 and higher)
 	
 	.DESCRIPTION
 		Use this function to backup your VCSA to a remote location
-
 	.EXAMPLE
         [VMware.VimAutomation.Cis.Core.Types.V1.Secret]$BackupPassword = "VMw@re123"
         $Comment = "First API Backup"
@@ -392,7 +387,6 @@ Function Backup-VCSAToFile {
         $LocationUser = "admin"
         [VMware.VimAutomation.Cis.Core.Types.V1.Secret]$locationPassword = "VMw@re123"
 		PS C:\> Backup-VCSAToFile -BackupPassword $BackupPassword  -LocationType $LocationType -Location $location -LocationUser $LocationUser -LocationPassword $locationPassword -Comment "This is a demo" -ShowProgress -FullBackup
-
 	
 	.NOTES
         Credit goes to @AlanRenouf for sharing the base of this function with me which I was able to take and make more robust as well as add in progress indicators
@@ -471,13 +465,11 @@ Function Get-VCSABackupJobs {
      Blog:          www.vtagion.com
      Twitter:       @vBrianGraf
 	===========================================================================
-
 	.SYNOPSIS
 		Get-VCSABackupJobs returns a list of all backup jobs VCSA has ever performed (vSphere 6.5 and higher)
 	
 	.DESCRIPTION
 		Get-VCSABackupJobs returns a list of all backup jobs VCSA has ever performed
-
 	.EXAMPLE
 		PS C:\> Get-VCSABackupJobs
 	
@@ -529,13 +521,11 @@ Function Get-VCSABackupStatus {
      Blog:          www.vtagion.com
      Twitter:       @vBrianGraf
 	===========================================================================
-
 	.SYNOPSIS
 		Returns the ID, Progress, and State of a VCSA backup (vSphere 6.5 and higher)
 	
 	.DESCRIPTION
 		Returns the ID, Progress, and State of a VCSA backup
-
 	.EXAMPLE
 		PS C:\> $backups = Get-VCSABackupJobs
                 $backups[0] | Get-VCSABackupStatus
